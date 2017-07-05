@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{ Codigo - Ruby on Rails Team's common services }
   spec.description   = %q{ Codigo - Ruby on Rails Team's common services. We adopted a microservice architecture in devising the approach of usage of this gem. These services are functions that are expected to be commonly used among our projects. This library serves to accumulate all this knowledge and speed up development without compromising quality and accuracy. }
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "https://github.com/sgcodigo/cdg-services"
   spec.license       = "MIT"
 
   # # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
