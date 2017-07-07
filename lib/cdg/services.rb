@@ -33,7 +33,28 @@ module CDG
       rescue OpenURI::HTTPError => e
         return nil
       end
+    end
 
+    def self.ping_slack! webhook: ENV['SLACK_URL'], message:, channel: nil, username: nil
+      begin
+        uri = URI(webhook)
+
+        resp = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+          req = Net::HTTP::Post.new(uri)
+          req['Content-Type'] = 'application/json'
+
+          body = {}
+          body[:text] = message
+          body[:channel] = channel if channel
+          body[:username] = username if username
+          # TODO custom icon_emoji?
+          
+          req.body = body.to_json
+          http.request(req)
+        end
+      rescue => e
+        raise e
+      end
     end
 
   end
