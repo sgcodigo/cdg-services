@@ -9,7 +9,7 @@ module CDG
 
   module Services
 
-    def self.GetIOSVersion app_id: # eg 123456789
+    def self.get_ios_version app_id: # eg 123456789
       resp = JSON.parse Net::HTTP.get(URI("https://itunes.apple.com/lookup?id=#{app_id}"))
       results = resp["results"]
 
@@ -20,7 +20,7 @@ module CDG
       end
     end
 
-    def self.GetAndroidVersion app_id: # eg sg.codigo.app_name
+    def self.get_android_version app_id: # eg sg.codigo.app_name
       begin
         resp = Nokogiri::HTML(open("https://play.google.com/store/apps/details?id=#{ app_id }&hl=en"))
         elements = resp.css("div[class='content'][itemprop='softwareVersion']")
