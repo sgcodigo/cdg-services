@@ -1,8 +1,12 @@
 # CDG::Services
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/cdg/services`. To experiment with that code, run `bin/console` for an interactive prompt.
+Codigo - Ruby on Rails Team's common services.
 
-TODO: Delete this and the text above, and describe your gem
+We adopted a microservice architecture in devising the approach of usage of this gem.
+
+These services are functions that are expected to be commonly used among our projects.
+
+This library serves to accumulate all this knowledge and speed up development without compromising quality and accuracy.
 
 ## Installation
 
@@ -22,7 +26,24 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Get the latest app version of any iOS app; `app_id` is the id of the app in the form of numerics, eg. `12345678`.
+```ruby
+CDG::Services.get_ios_version(app_id: app_id)
+```
+
+
+Get the latest app version of any Android app; `app_id` is the id of the app in the form of `com.package.name`.
+```ruby
+CDG::Services.get_android_version(app_id: app_id)
+```
+
+
+Send a message to any slack channel via a Slack webhook, eg. `https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX`. See how to set up a [Slack webhook](https://api.slack.com/incoming-webhooks).
+
+Set the webhook in your application's environment variable with the name `SLACK_URL`. This gem access the webhook using `ENV['SLACK_URL']`.
+```ruby
+CDG::Services.get_android_version(app_id: app_id)
+```
 
 ## Development
 
