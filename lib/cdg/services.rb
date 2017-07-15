@@ -35,22 +35,51 @@ module CDG
       end
     end
 
-    def self.ping_slack! webhook: ENV['SLACK_URL'], message:, channel: nil, username: nil
+    def self.ping_slack!(
+      webhook: ENV['SLACK_URL'],
+      color: "5bc0de", # default boostrap color for info
+      title: nil,
+      title_link: nil,
+      pretext: nil,
+      text: ,
+      fields: nil,
+      channel: nil,
+      username: nil)
       begin
+        if fields && !fields.is_a?(Array)
+          raise ArgumentError, "wrong argument type for \"fields\"; should be an array"
+        end
+
         uri = URI(webhook)
 
         resp = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
           req = Net::HTTP::Post.new(uri)
           req['Content-Type'] = 'application/json'
 
-          body = {}
-          body[:text] = message
+          attachment = {}
+          attachment[:text] = text
+          attachment[:color] = color if color
+          attachment[:title] = title if title
+          attachment[:title_link] = title_link if title_link
+          attachment[:pretext] = pretext if pretext
+          attachment[:fields] = fields if fields
+
+          body = { attachments: [attachment] }
           body[:channel] = channel if channel
           body[:username] = username if username
-          # TODO custom icon_emoji?
           
           req.body = body.to_json
-          http.request(req)
+          resp = http.request(req)
+
+          ## TODO need to find a better way handle response body?
+          if resp.is_a?(Net::HTTPNotFound)
+            case resp.body
+            when "channel_not_found"
+              raise ArgumentError, "slack channel is not found"
+            else
+              # TODO
+            end
+          end
         end
       rescue => e
         raise e

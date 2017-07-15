@@ -37,27 +37,101 @@ RSpec.describe CDG::Services do
   describe "#ping_slack!" do
 
     before :each do
-      ENV["SLACK_URL"] = "https://hooks.slack.com/services/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" # slack ping privately to Vic-L in codigogroup
+      ENV["SLACK_URL"] = "https://hooks.slack.com/services/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" # slack ping to channel meant for testing in codigogroup
     end
 
-    it "should throw error for invalid webhook" do
-      ENV["SLACK_URL"] = "invalid_url"
+    describe "should fail" do
 
-      expect{CDG::Services.ping_slack!(
-        message: "test",
-        channel: "test",
-        username: "test",
-      )}.to raise_error(Errno::ECONNREFUSED, "Failed to open TCP connection to :443 (Connection refused - connect(2) for nil port 443)")
+      it "for invalid webhook" do
+        ENV["SLACK_URL"] = "invalid_url"
+
+        expect{CDG::Services.ping_slack!(
+          text: "test",
+          channel: "test",
+          username: "test",
+          )}.to raise_error(Errno::ECONNREFUSED, "Failed to open TCP connection to :443 (Connection refused - connect(2) for nil port 443)")
+      end
+
+      it "for fields param which is not an array" do
+        expect{CDG::Services.ping_slack!(
+          text: "test",
+          fields: "test",
+          )}.to raise_error(ArgumentError, "wrong argument type for \"fields\"\; should be an array")
+      end
+
+      it "for missing text param" do
+        expect{CDG::Services.ping_slack!}.to raise_error(ArgumentError, "missing keyword: text")
+      end
+
+      it "for invalid channel" do
+        expect{CDG::Services.ping_slack!(
+          text: "test",
+          channel: "#invalid-channel",
+          username: "test",
+          )}.to raise_error(ArgumentError, "slack channel is not found")
+      end
+
     end
 
-    it "should throw error for missing message param" do
-      expect{CDG::Services.ping_slack!}.to raise_error(ArgumentError, "missing keyword: message")
-    end
 
-    it "should pass for missing channel/username params" do
-      expect{CDG::Services.ping_slack!(
-        message: "test",
-      )}.not_to raise_error
+    describe "should pass" do
+
+      it "for invalid fields params" do
+        expect{CDG::Services.ping_slack!(
+          text: "test",
+          fields: [
+            codigo: "codigo"
+          ]
+          )}.not_to raise_error
+      end
+
+      it "for invalid color params" do
+        expect{CDG::Services.ping_slack!(
+          text: "test",
+          color: "codigo",
+          )}.not_to raise_error
+
+        expect{CDG::Services.ping_slack!(
+          text: "test",
+          color: ["af3131"],
+          )}.not_to raise_error
+      end
+
+      it "if all the params are passed" do
+        expect{CDG::Services.ping_slack!(
+          text: "test",
+          channel: "#pings-tests",
+          username: "test",
+          color: ["good", "warning", "danger", "#af3131", "af3131"].sample,
+          title: "test title",
+          title_link: "https://www.codigo.co/",
+          pretext: "test pretext",
+          fields: [
+            {
+              title: "field 1 title",
+              value: "field 1 value",
+              short: true,
+            },
+            {
+              title: "field 2 title",
+              value: "field 2 value",
+              short: true,
+            },
+            {
+              title: "field 3 title",
+              value: "This field 3 value is super loooooo oooooooooooooo ooooooooooooooo oooooooooooooong",
+              short: false,
+            },
+          ]
+          )}.not_to raise_error
+      end
+
+      it "for missing params other than text" do
+        expect{CDG::Services.ping_slack!(
+          text: "test",
+          )}.not_to raise_error
+      end
+
     end
 
   end
