@@ -1,7 +1,6 @@
 require "cdg/services/version"
 require "net/http"
 require "json"
-require "pry"
 require "nokogiri"
 require "open-uri"
 
