@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.0.3] - 2017-07-15
+### Changed
+- Improve method(`CDG::Services.ping_slack!`) to send notification to slack as attachment with more params, but only the necessary ones so that this service does not become a full featured api client that makes use of slack api since there already is 1.
+
 ## [0.0.2] - 2017-07-07
 ### Added
 - Add method(`CDG::Services.ping_slack!`) to send notification to slack with some custom params
