@@ -26,23 +26,51 @@ Or install it yourself as:
 
 ## Usage
 
+#### CDG::Services.get_ios_version
+
 Get the latest app version of any iOS app; `app_id` is the id of the app in the form of numerics, eg. `12345678`.
 ```ruby
 CDG::Services.get_ios_version(app_id: app_id)
 ```
-
+#### CDG::Services.get_android_version
 
 Get the latest app version of any Android app; `app_id` is the id of the app in the form of `com.package.name`.
 ```ruby
 CDG::Services.get_android_version(app_id: app_id)
 ```
 
+#### CDG::Services.ping_slack
 
-Send a message to any slack channel via a Slack webhook, eg. `https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX`. See how to set up a [Slack webhook](https://api.slack.com/incoming-webhooks).
+Send a message as an attachment to any slack channel via a Slack webhook, eg. `https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX`. See how to set up a [Slack webhook](https://api.slack.com/incoming-webhooks) and send message as [attachment](https://api.slack.com/docs/message-attachments).
 
 Set the webhook in your application's environment variable with the name `SLACK_URL`. This gem access the webhook using `ENV['SLACK_URL']`.
 ```ruby
-CDG::Services.get_android_version(app_id: app_id)
+CDG::Services.ping_slack(
+  text: "test", # only this is mandatory
+  channel: "#pings-tests",
+  username: "test",
+  color: ["good", "warning", "danger", "#af3131", "af3131"].sample,
+  title: "test title",
+  title_link: "https://www.codigo.co/",
+  pretext: "test pretext",
+  fields: [
+    {
+      title: "field 1 title",
+      value: "field 1 value",
+      short: true,
+    },
+    {
+      title: "field 2 title",
+      value: "field 2 value",
+      short: true,
+    },
+    {
+      title: "field 3 title",
+      value: "This field 3 value is super loooooo oooooooooooooo ooooooooooooooo oooooooooooooong",
+      short: false,
+    },
+  ]
+)
 ```
 
 ## Development
