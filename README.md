@@ -30,14 +30,19 @@ Or install it yourself as:
 
 Get the latest app version of any iOS app; `app_id` is the id of the app in the form of numerics, eg. `12345678`.
 ```ruby
-CDG::Services.get_ios_version(app_id: app_id)
+CDG::Services.get_ios_version(app_id: app_id) # returns `1.1.5`
 ```
+
+Use `Gem::Version.new(app_store_version) > Gem::Version.new(app_version)` to compare versions
+
 #### CDG::Services.get_android_version
 
 Get the latest app version of any Android app; `app_id` is the id of the app in the form of `com.package.name`.
 ```ruby
-CDG::Services.get_android_version(app_id: app_id)
+CDG::Services.get_android_version(app_id: app_id) # returns `1.1.5`
 ```
+
+Use `Gem::Version.new(play_store_version) > Gem::Version.new(app_version)` to compare versions
 
 #### CDG::Services.ping_slack
 
