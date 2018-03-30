@@ -21,14 +21,11 @@ module CDG
 
     def self.get_android_version app_id: # eg sg.codigo.app_name
       begin
-        resp = Nokogiri::HTML(open("https://play.google.com/store/apps/details?id=#{ app_id }&hl=en"))
-        elements = resp.css("div[class='content'][itemprop='softwareVersion']")
+        html = URI.parse("https://play.google.com/store/apps/details?id=#{app_id}&hl=en").read
 
-        if elements.empty?
-          nil
-        else
-          elements[0].text.strip
-        end
+        /<div[^>]*?>Current Version<\/div><div><span[^>]*?>(?<android_version>.*?)<\/span><\/div>/ =~ html
+
+        android_version
       rescue OpenURI::HTTPError => e
         return nil
       end
