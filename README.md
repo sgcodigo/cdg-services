@@ -44,13 +44,13 @@ CDG::Services.get_android_version(app_id: app_id) # returns `1.1.5`
 
 Use `Gem::Version.new(play_store_version) > Gem::Version.new(app_version)` to compare versions
 
-#### CDG::Services.ping_slack
+#### CDG::Services.ping_slack!
 
 Send a message as an attachment to any slack channel via a Slack webhook, eg. `https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX`. See how to set up a [Slack webhook](https://api.slack.com/incoming-webhooks) and send message as [attachment](https://api.slack.com/docs/message-attachments).
 
 Set the webhook in your application's environment variable with the name `SLACK_URL`. This gem access the webhook using `ENV['SLACK_URL']`.
 ```ruby
-CDG::Services.ping_slack(
+CDG::Services.ping_slack!(
   text: "test", # only this is mandatory
   channel: "#pings-tests",
   username: "test",
